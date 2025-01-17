@@ -63,9 +63,9 @@ A simple Discord bot that streams songs from a specified voice channel using MP3
   ```
 
 - Other commands available via help command
-```
-@YourBotName help
-```
+   ```
+   @YourBotName help
+   ```
 
 ## License
 
