@@ -1,0 +1,10 @@
+# Contents of /discord-music-bot/discord-music-bot/.gitignore
+
+node_modules/
+dist/
+build/
+out/
+.env
+*.log
+*.tsbuildinfo
+data/*.mp3
