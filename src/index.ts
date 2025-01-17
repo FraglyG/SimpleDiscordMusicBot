@@ -66,11 +66,11 @@ export const musicPlayer = new MusicPlayer({});
 client.once("ready", () => {
     console.log(`Logged in as ${client.user?.tag}`);
 
-    try {
-        musicPlayer.join(config.CHANNEL_ID);
-    } catch (error) {
-        console.error(error);
-    }
+    // try {
+    //     musicPlayer.join(config.CHANNEL_ID);
+    // } catch (error) {
+    //     console.error(error);
+    // }
 });
 
 client.on("voiceStateUpdate", (oldState, newState) => {
@@ -79,8 +79,10 @@ client.on("voiceStateUpdate", (oldState, newState) => {
         : (newState.channelId == config.CHANNEL_ID ? newState.channel : null);
 
     if (!channel) return;
-    if (channel.members.size <= 1 && !musicPlayer.paused) musicPlayer.pause();
-    if (channel.members.size > 1 && (musicPlayer.paused || musicPlayer.stopped)) musicPlayer.play();
+    // if (channel.members.size <= 1 && !musicPlayer.paused) musicPlayer.pause();
+    // if (channel.members.size > 1 && (musicPlayer.paused || musicPlayer.stopped)) musicPlayer.play();
+    if (channel.members.size <= 1) musicPlayer.leave();
+    if (channel.members.size > 1 && !musicPlayer.joined) musicPlayer.join(config.CHANNEL_ID);
 })
 
 client.on("messageCreate", async (message) => {

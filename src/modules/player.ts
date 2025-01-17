@@ -11,6 +11,7 @@ export class MusicPlayer {
     private config: MusicPlayerConfig;
     paused = false;
     stopped = true;
+    joined = false;
 
     private player: AudioPlayer;
     private playlist: string[] = [];
@@ -53,6 +54,7 @@ export class MusicPlayer {
 
         // Save the channel ID
         this.joinedConfig = { channelId: channel.id, connection };
+        this.joined = true;
     }
 
     async leave() {
@@ -60,6 +62,7 @@ export class MusicPlayer {
         this.stop();
         this.joinedConfig.connection.destroy();
         this.joinedConfig = null;
+        this.joined = false;
     }
 
     /** Make the bot play audio data from /data in loop */
