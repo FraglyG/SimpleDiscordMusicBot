@@ -58,7 +58,8 @@ export class MusicPlayer {
     }
 
     async leave() {
-        if (!this.joinedConfig) throw new Error("Bot is not in a voice channel");
+        if (!this.joinedConfig) return;
+
         this.stop();
         this.joinedConfig.connection.destroy();
         this.joinedConfig = null;
