@@ -73,7 +73,7 @@ client.once("ready", () => {
     // }
 });
 
-client.on("voiceStateUpdate", (oldState, newState) => {
+client.on("voiceStateUpdate", async (oldState, newState) => {
     const channel = oldState.channelId == config.CHANNEL_ID
         ? oldState.channel
         : (newState.channelId == config.CHANNEL_ID ? newState.channel : null);
@@ -82,7 +82,14 @@ client.on("voiceStateUpdate", (oldState, newState) => {
     // if (channel.members.size <= 1 && !musicPlayer.paused) musicPlayer.pause();
     // if (channel.members.size > 1 && (musicPlayer.paused || musicPlayer.stopped)) musicPlayer.play();
     if (channel.members.size <= 1) musicPlayer.leave();
-    if (channel.members.size > 1 && !musicPlayer.joined) musicPlayer.join(config.CHANNEL_ID);
+    if (channel.members.size > 1 && !musicPlayer.joined) {
+        try {
+            await musicPlayer.join(config.CHANNEL_ID);
+            musicPlayer.play();
+        } catch (error) {
+            console.error(`Error joining channel after user joined: ${error}`);
+        }
+    }
 })
 
 client.on("messageCreate", async (message) => {
