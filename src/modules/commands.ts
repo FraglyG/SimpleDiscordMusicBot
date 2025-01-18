@@ -62,7 +62,7 @@ const commandDatabase = {
         description: `Removes a song from the playlist`,
         args: ["name"],
         run: async (message: Message, args: string[]) => {
-            const name = args[1] ? args[1].trim() : undefined;
+            const name = args[0] ? args[0].trim() : undefined;
             if (!name) return message.reply("Remove what bro??");
 
             // exists?
