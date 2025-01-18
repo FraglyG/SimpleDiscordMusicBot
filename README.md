@@ -4,7 +4,9 @@
 
 A simple Discord bot that streams songs from a specified voice channel using MP3 files stored in the `data` folder. The bot allows users to add and remove songs dynamically.
 
-> NOTE: I made this in an hour, the code is not polished and there are a lot of things I'd do differently if I made this for a production environment 
+> NOTE: I made this in an hour, the code is not polished and there are a lot of things I'd do differently if I made this for a production environment .
+
+> ANOTHER NOTE: The bot is coded in with a certain.. personality.. if you don't like a brainrotted bratty bot then just change the responses in the `messanger.ts` file.
 
 ## Features
 

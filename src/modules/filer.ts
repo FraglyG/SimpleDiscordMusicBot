@@ -5,12 +5,9 @@ import { musicPlayer } from "..";
 
 const dataPath = path.join(process.cwd(), "data");
 
-export async function addFileFromURL(url: string) {
-    // Download the file
-    const downloader = new Downloader({
-        url,
-        directory: dataPath,
-    });
+/** Internal add file from URL, not exposed cause addFilesFromURLs serves as a proxy */
+async function addFileFromURL(url: string) {
+    const downloader = new Downloader({ url, directory: dataPath });
 
     try {
         const { filePath, downloadStatus } = await downloader.download();
@@ -22,6 +19,14 @@ export async function addFileFromURL(url: string) {
     }
 }
 
+/** Adds file(s) from URLs by downloading them and adding them to the song playlist */
+export async function addFilesFromURL(url: string[] | string) {
+    const urls = typeof url == "string" ? [url] : url;
+    const statuses = await Promise.all(urls.map(addFileFromURL));
+    return statuses;
+}
+
+/** Removes a file by searching for its name and removing it if found */
 export async function removeFileFromName(name: string) {
     if (!name.includes(".mp3")) name += ".mp3";
 

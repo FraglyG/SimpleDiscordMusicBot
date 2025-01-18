@@ -57,6 +57,7 @@ export class MusicPlayer {
         this.joined = true;
     }
 
+    /** Leaves the voice chat and stops playing music */
     async leave() {
         if (!this.joinedConfig) return;
 
@@ -89,12 +90,14 @@ export class MusicPlayer {
         this.player.pause();
     }
 
+    /** Stops the playback */
     async stop() {
         console.log("Stopping playback")
         this.stopped = true;
         if (this.player.state.status == AudioPlayerStatus.Playing) this.player.stop(true);
     }
 
+    /** Internal command for playing the next song, used to start playback as well */
     private async playNext() {
         if (!this.joinedConfig) return false;
         await this.updatePlaylist();
@@ -116,6 +119,7 @@ export class MusicPlayer {
         this.stopped = false;
     }
 
+    /** Update the playlist by looking at songs in the data folder */
     async updatePlaylist() {
         // go through /data and gather all audio files
         const oldPlaylist = JSON.parse(JSON.stringify(this.playlist)) as string[];
@@ -143,6 +147,7 @@ export class MusicPlayer {
         }
     }
 
+    /** Fetches the current loaded playlist */
     async getPlaylist(config?: { getNames?: boolean }) {
         await this.updatePlaylist();
         let playlist = this.playlist;
