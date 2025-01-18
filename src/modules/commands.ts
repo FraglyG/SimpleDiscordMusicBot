@@ -110,10 +110,10 @@ const commandDatabase = {
         args: ["channelId?"],
         run: async (message: Message, args: string[]) => {
             const channelId = args[0] ? args[0].trim() : undefined;
-            let joinResult: { success: boolean, error: string };
+            let joinResult: { success: boolean, error?: string };
             if (!channelId) joinResult = await musicPlayer.join(config.CHANNEL_ID);
             else joinResult = await musicPlayer.join(channelId);
-            if (!joinResult.success) return message.reply(joinResult.error);
+            if (!joinResult.success) return message.reply(joinResult.error || "Unknown Error");
         }
     } as Command,
 

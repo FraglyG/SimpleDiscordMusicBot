@@ -35,12 +35,12 @@ export class MusicPlayer {
     }
 
     /** Make the bot join the Voice Channel */
-    async join(channelId: string) {
+    async join(channelId: string): Promise<{ success: boolean, error?: string }> {
         const channel = await client.channels.fetch(channelId).catch(e => { return { error: (e.message || "Unknown Discord Error") as string } });
 
         // Error Handling
         if (!channel) return { success: false, error: "Channel not found" };
-        if ("error" in channel) return { success: false, error: channel.error };
+        if ("error" in channel) return { success: false, error: channel.error as string };
         if (channel.type !== ChannelType.GuildVoice) return { success: false, error: "Channel is not a voice channel" };
         if (!channel.joinable) return { success: false, error: "Channel is not joinable" };
 
@@ -56,7 +56,7 @@ export class MusicPlayer {
         this.joinedConfig = { channelId: channel.id, connection };
         this.joined = true;
 
-        return { success: true, error: undefined }
+        return { success: true }
     }
 
     /** Leaves the voice chat and stops playing music */
