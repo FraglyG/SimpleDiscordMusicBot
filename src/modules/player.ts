@@ -157,6 +157,7 @@ export class MusicPlayer {
 
     /** Returns the path of the currently playing song */
     getCurrentPlaying() {
+        if (this.stopped) return undefined;
         return this.playlist[this.currentPlaylistIndex];
     }
 }
