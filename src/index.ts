@@ -42,7 +42,8 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
 
 client.on("messageCreate", async (message) => {
     if (message.author.bot) return;
-    if (message.author.id !== config.OWNER_ID) return;
+    const admins = (config.ADMIN_ID as string).split(",").map(id => id.trim());
+    if (!admins.includes(message.author.id)) return;
     if (!message.content.startsWith(`<@${client.user?.id}>`)) return;
 
     const args = message.content.split(" ").filter(t => t.trim().length > 0);

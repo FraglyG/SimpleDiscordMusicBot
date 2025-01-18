@@ -39,7 +39,7 @@ A simple Discord bot that streams songs from a specified voice channel using MP3
    ```
    BOT_TOKEN=your_bot_token
    CHANNEL_ID=your_voice_channel_id
-   OWNER_ID=bot_owner_or_admin_id
+   ADMIN_ID=bot_admin_ids,seperated_by_comma
    ```
 
 4. **Run the bot:**
