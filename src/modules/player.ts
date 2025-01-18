@@ -151,7 +151,7 @@ export class MusicPlayer {
     async getPlaylist(config?: { getNames?: boolean }) {
         await this.updatePlaylist();
         let playlist = this.playlist;
-        if (config?.getNames) playlist = playlist.map(p => path.normalize(p).split("\\").pop() || path.normalize(p));
+        if (config?.getNames) playlist = playlist.map(p => path.normalize(p).split("/").pop() || path.normalize(p).split("\\").pop() || path.normalize(p));
         return playlist;
     }
 
