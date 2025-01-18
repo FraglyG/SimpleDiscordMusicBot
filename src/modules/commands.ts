@@ -108,14 +108,12 @@ const commandDatabase = {
     join: {
         description: `Joins a voice channel`,
         args: ["channelId?"],
-        run: (message: Message, args: string[]) => {
-            try {
-                const channelId = args[0] ? args[0].trim() : undefined;
-                if (!channelId) musicPlayer.join(config.CHANNEL_ID);
-                else musicPlayer.join(channelId);
-            } catch (error) {
-                message.reply((error as any).message || "Unknown error");
-            }
+        run: async (message: Message, args: string[]) => {
+            const channelId = args[0] ? args[0].trim() : undefined;
+            let joinResult: { success: boolean, error: string };
+            if (!channelId) joinResult = await musicPlayer.join(config.CHANNEL_ID);
+            else joinResult = await musicPlayer.join(channelId);
+            if (!joinResult.success) return message.reply(joinResult.error);
         }
     } as Command,
 

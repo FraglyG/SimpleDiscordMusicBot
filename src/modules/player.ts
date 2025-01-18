@@ -39,10 +39,10 @@ export class MusicPlayer {
         const channel = await client.channels.fetch(channelId).catch(e => { return { error: (e.message || "Unknown Discord Error") as string } });
 
         // Error Handling
-        if (!channel) throw new Error("Channel not found");
-        if ("error" in channel) throw new Error(channel.error);
-        if (channel.type !== ChannelType.GuildVoice) throw new Error("Channel is not a voice channel");
-        if (!channel.joinable) throw new Error("Channel is not joinable");
+        if (!channel) return { success: false, error: "Channel not found" };
+        if ("error" in channel) return { success: false, error: channel.error };
+        if (channel.type !== ChannelType.GuildVoice) return { success: false, error: "Channel is not a voice channel" };
+        if (!channel.joinable) return { success: false, error: "Channel is not joinable" };
 
         // Join Discord channel
         const connection = joinVoiceChannel({
@@ -55,6 +55,8 @@ export class MusicPlayer {
         // Save the channel ID
         this.joinedConfig = { channelId: channel.id, connection };
         this.joined = true;
+
+        return { success: true, error: undefined }
     }
 
     /** Leaves the voice chat and stops playing music */
