@@ -110,7 +110,7 @@ const commandDatabase = {
         args: ["channelId?"],
         run: (message: Message, args: string[]) => {
             try {
-                const channelId = args[2] ? args[2].trim() : undefined;
+                const channelId = args[0] ? args[0].trim() : undefined;
                 if (!channelId) musicPlayer.join(config.CHANNEL_ID);
                 else musicPlayer.join(channelId);
             } catch (error) {
