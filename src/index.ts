@@ -19,7 +19,8 @@ client.once("ready", () => {
     console.log(`Logged in as ${client.user?.tag}`);
 });
 
-client.on("voiceStateUpdate", async (oldState, newState) => {
+// TODO: assign classes (can't cause I have node_modules deleted and idrc to install them rn just to find the class names)
+async function checkState(oldState: any, newState: any) {
     const channel = oldState.channelId == config.CHANNEL_ID
         ? oldState.channel
         : (newState.channelId == config.CHANNEL_ID ? newState.channel : null);
@@ -27,18 +28,30 @@ client.on("voiceStateUpdate", async (oldState, newState) => {
     if (!channel) return;
 
     // No one's in the channel other than the bot, so leave
-    if (channel.members.size <= 1 && musicPlayer.joined) return musicPlayer.leave();
+    if (channel.members.size <= 1 && (musicPlayer.joined || musicPlayer.joining)) {
+        if (musicPlayer.joined) return musicPlayer.leave();
+        if (!musicPlayer.joining) return; // this would probs never happen
+
+        // Currently joining, wait until done and then leave if joined
+        await musicPlayer.waitUntil(() => !musicPlayer.joining).catch(console.warn);
+        if (musicPlayer.joined) checkState(oldState, newState);
+        else if (musicPlayer.joining) console.warn(`Music player might be stuck on joining state`);
+        return;
+    }
 
     // Someone's in the channel (who isn't the bot) so join and start jamming
-    if (channel.members.size >= 1 && !musicPlayer.joined) {
+    if (channel.members.size >= 1 && !musicPlayer.joined && !musicPlayer.joining) {
         try {
             await musicPlayer.join(config.CHANNEL_ID);
             musicPlayer.play();
         } catch (error) {
             console.error(`Error joining channel after user joined: ${error}`);
         }
+        return;
     }
-})
+}
+
+client.on("voiceStateUpdate", checkState)
 
 client.on("messageCreate", async (message) => {
     if (message.author.bot) return;

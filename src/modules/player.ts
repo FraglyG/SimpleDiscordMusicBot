@@ -9,9 +9,12 @@ export type MusicPlayerConfig = {
 
 export class MusicPlayer {
     private config: MusicPlayerConfig;
+
+    // States
     paused = false;
     stopped = true;
     joined = false;
+    joining = false;
 
     private player: AudioPlayer;
     private playlist: string[] = [];
@@ -36,6 +39,7 @@ export class MusicPlayer {
 
     /** Make the bot join the Voice Channel */
     async join(channelId: string): Promise<{ success: boolean, error?: string }> {
+        this.joining = true;
         const channel = await client.channels.fetch(channelId).catch(e => { return { error: (e.message || "Unknown Discord Error") as string } });
 
         // Error Handling
@@ -55,6 +59,7 @@ export class MusicPlayer {
         // Save the channel ID
         this.joinedConfig = { channelId: channel.id, connection };
         this.joined = true;
+        this.joining = false;
 
         return { success: true }
     }
@@ -67,6 +72,7 @@ export class MusicPlayer {
         this.joinedConfig.connection.destroy();
         this.joinedConfig = null;
         this.joined = false;
+        this.joining = false;
     }
 
     /** Make the bot play audio data from /data in loop */
@@ -161,5 +167,22 @@ export class MusicPlayer {
     getCurrentPlaying() {
         if (this.stopped) return undefined;
         return this.playlist[this.currentPlaylistIndex];
+    }
+
+    waitUntil(condition: () => boolean, timeout = 10_000): Promise<void> {
+        return new Promise((resolve, reject) => {
+            const timeoutId = setTimeout(() => {
+                reject(new Error("Timeout"));
+            }, timeout);
+
+            const intervalId = setInterval(() => {
+                if (condition()) {
+                    clearInterval(intervalId);
+                    clearTimeout(timeoutId);
+                    resolve();
+                }
+            }, 100);
+        })
+
     }
 }
