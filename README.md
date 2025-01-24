@@ -18,6 +18,7 @@ A simple Discord bot that streams songs from a specified voice channel using MP3
 ## Prerequisites
 
 - Node.js
+- pnpm (or just npm, but for the setup instructions I used pnpm)
 - A Discord account and a server where you can add the bot
 - A Discord bot token (you can get one [here](https://discord.com/developers/applications))
 
@@ -25,13 +26,13 @@ A simple Discord bot that streams songs from a specified voice channel using MP3
 
 1. **Clone the repository:**
    ```
-   git clone <repository-url>
-   cd SimpleDiscordMusicBot
+   git clone https://github.com/FraglyG/SimpleDiscordMusicBot
+   cd discord-music-bot
    ```
 
 2. **Install dependencies:**
    ```
-   npm install
+   pnpm install
    ```
 
 3. **Create a `.env` file:**
@@ -44,7 +45,7 @@ A simple Discord bot that streams songs from a specified voice channel using MP3
 
 4. **Run the bot:**
    ```
-   npm start
+   pnpm start
    ```
 
 ## Usage
