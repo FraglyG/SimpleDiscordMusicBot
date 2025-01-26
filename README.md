@@ -1,5 +1,3 @@
-# README.md
-
 # Discord Music Bot
 
 A simple Discord bot that streams songs from a specified voice channel using MP3 files stored in the `data` folder. The bot allows users to add and remove songs dynamically.
@@ -32,7 +30,7 @@ A simple Discord bot that streams songs from a specified voice channel using MP3
 
 2. **Install dependencies:**
    ```
-   pnpm install
+   pnpm install && pnpm build
    ```
 
 3. **Create a `.env` file:**
@@ -44,6 +42,13 @@ A simple Discord bot that streams songs from a specified voice channel using MP3
    ```
 
 4. **Run the bot:**
+
+   Development:
+   ```
+   pnpm run dev
+   ```
+
+   Production:
    ```
    pnpm start
    ```
